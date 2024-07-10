@@ -1,0 +1,10 @@
+[package]
+name = "blsttc_benchmark"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+blsttc = {package = "blsttc", git = "ssh://git@github.com/Entropy-Foundation/blsttc-supra.git", rev = "ae4bce5002e8693f879599f6267a566f53c2c87e"}
+csv = "1.1"
