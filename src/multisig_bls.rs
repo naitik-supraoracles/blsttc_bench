@@ -152,7 +152,7 @@ pub fn benchmark_multisig_bls(
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //for creating aggregated pubkey g2
+    //for creating aggregated pubkey g1
     let mut time_to_create_aggregated_pubkey_g1 = 0.0;
 
     let start_time = Instant::now();
@@ -186,7 +186,7 @@ pub fn benchmark_multisig_bls(
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //for verifying threshold sign g1
+    //for verifying aggregated sign g1
     let mut time_to_verify_aggregated_sign_g1 = 0.0;
 
     let start_time = Instant::now();

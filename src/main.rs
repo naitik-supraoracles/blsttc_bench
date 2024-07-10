@@ -1,6 +1,6 @@
 use blsttc_benchmark::{
-    multisig_bls::benchmark_multisig_bls, simple_bls::benchmark_normal_bls,
-    threshold_bls::benchmark_threshold_bls,
+    multisig_bls::benchmark_multisig_bls, multisig_bls_nizk::benchmark_nizk_multisig_bls,
+    simple_bls::benchmark_normal_bls, threshold_bls::benchmark_threshold_bls,
 };
 use csv::Writer;
 use std::fs::File;
@@ -18,10 +18,14 @@ fn main() {
     //file to store bls multisig aggregation results
     let bls_multisig_file = File::create("multisig_aggregation.csv").unwrap();
 
+    //file to store bls multisig aggregation results (nizk)
+    let bls_nizk_multisig_file = File::create("multisig_aggregation_with_nizk.csv").unwrap();
+
     //dedicated writer to each file
     let mut wtr1 = Writer::from_writer(bls_simple_file);
     let mut wtr2 = Writer::from_writer(bls_threshold_file);
     let mut wtr3 = Writer::from_writer(bls_multisig_file);
+    let mut wtr4 = Writer::from_writer(bls_nizk_multisig_file);
 
     //setting coloumn name
     wtr1.write_record(&[
@@ -62,6 +66,16 @@ fn main() {
         "creation_agg_sign_g2",
         "verify_agg_sig_g1",
         "verify_agg_sig_g2",
+    ])
+    .unwrap();
+    wtr4.write_record(&[
+        "nodes",
+        "creation_single_sign_share_g1",
+        "verify_single_sign_share_g1",
+        "verify_n_signshares_g1",
+        "creation_agg_pubkey_g2",
+        "creation_agg_sign_g1",
+        "verify_agg_sig_g1",
     ])
     .unwrap();
 
@@ -156,6 +170,30 @@ fn main() {
             &format!("{:.4}", creation_agg_sign_g2),
             &format!("{:.4}", verify_agg_sign_g1),
             &format!("{:.4}", verify_agg_sign_g2),
+        ])
+        .unwrap();
+    }
+
+    for nodes in nodes_info {
+        println!("\n ####### nodes : {} ####### \n", nodes);
+
+        println!("\n ####### multisig aggregation bls (with nizk) ####### \n");
+        let (
+            mean_single_sign_creation_g1,
+            mean_single_sign_verify_g1,
+            n_sign_verify_g1,
+            creation_agg_pubkey_g2,
+            creation_agg_sign_g1,
+            verify_agg_sign_g1,
+        ) = benchmark_nizk_multisig_bls(nodes);
+        wtr4.write_record(&[
+            &format!("{}", nodes),
+            &format!("{:.4}", mean_single_sign_creation_g1),
+            &format!("{:.4}", mean_single_sign_verify_g1),
+            &format!("{:.4}", n_sign_verify_g1),
+            &format!("{:.4}", creation_agg_pubkey_g2),
+            &format!("{:.4}", creation_agg_sign_g1),
+            &format!("{:.4}", verify_agg_sign_g1),
         ])
         .unwrap();
     }
