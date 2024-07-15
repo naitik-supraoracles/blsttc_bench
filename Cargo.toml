@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 blsttc = {package = "blsttc", git = "ssh://git@github.com/Entropy-Foundation/blsttc-supra.git", rev = "ae4bce5002e8693f879599f6267a566f53c2c87e"}
 csv = "1.1"
+ed25519-dalek = { version = "1.0.1", features = ["batch"] }
+rand = "0.7.3"
